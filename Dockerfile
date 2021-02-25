@@ -6,6 +6,8 @@ USER node
 
 WORKDIR /src/myFitApi
 
+RUN chmod -R +w /src/myFitApi
+
 COPY --chown=node:node package.json package-lock.json ./
 
 RUN npm install
@@ -14,6 +16,7 @@ RUN node -v
 RUN npm -v
 
 RUN ls -la node_modules
+
 
 
 

@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
  #   db: 
  #     image: mysql:8.0.23
@@ -14,20 +14,21 @@ services:
  #       MYSQL_PASSWORD: 42424242
  #     restart: always           
     app:
-      build: .
-      container_name: app
+      build: 
+        context: .
+      container_name: myFitApi
       ports:
         - 3000:3000
 #      environment:
 #        MYSQL_HOST: db
       volumes:
-        - ./:/src/myFitApi 
-        - app_node_modules:/src/myFitApi/node_modules 
+        - /Users/vsyveniu/projects/web/myFitApi:/src/myFitApi/ 
+        - nodemodules:/src/myFitApi/node_modules 
       restart: always
      # depends_on: 
       #  - db
       command: npm run start
 volumes: 
-  app_node_modules:
+  nodemodules: {}
    
 
