@@ -1,32 +1,32 @@
 version: '2'
 services:
- #   db: 
- #     image: mysql:8.0.23
- #     container_name: mysql
- #     ports:
- #         - 3306:3306
- #     volumes:
- #         - ./mysql_volume:/var/lib/mysql
- #     environment:
- #       MYSQL_DATABASE: myFit
-  #      MYSQL_ROOT_PASSWORD: 42424242
- #       MYSQL_USER: vsyveniu
- #       MYSQL_PASSWORD: 42424242
- #     restart: always           
+    db: 
+      image: mysql:8.0.23
+      container_name: mysql
+      ports:
+          - 3306:3306
+      volumes:
+          - ./mysql_volume:/var/lib/mysql
+      environment:
+        MYSQL_DATABASE: myFit
+        MYSQL_ROOT_PASSWORD: 42424242
+        MYSQL_USER: vsyveniu
+        MYSQL_PASSWORD: 42424242
+      restart: always           
     app:
       build: 
         context: .
       container_name: myFitApi
       ports:
         - 3000:3000
-#      environment:
-#        MYSQL_HOST: db
+      environment:
+        MYSQL_HOST: db
       volumes:
         - .:/src/myFitApi/ 
         - nodemodules:/src/myFitApi/node_modules 
       restart: always
-     # depends_on: 
-      #  - db
+      depends_on: 
+        - db
       command: npm run start
 volumes: 
   nodemodules: {}
