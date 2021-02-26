@@ -15,7 +15,6 @@ RUN npm install
 RUN node -v
 RUN npm -v
 
-RUN ls -la node_modules
 
 
 

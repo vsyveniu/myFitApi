@@ -22,7 +22,7 @@ services:
 #      environment:
 #        MYSQL_HOST: db
       volumes:
-        - /Users/vsyveniu/projects/web/myFitApi:/src/myFitApi/ 
+        - .:/src/myFitApi/ 
         - nodemodules:/src/myFitApi/node_modules 
       restart: always
      # depends_on: 
