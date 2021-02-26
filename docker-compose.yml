@@ -6,7 +6,7 @@ services:
       ports:
           - 3306:3306
       volumes:
-          - ./mysql_volume:/var/lib/mysql
+          - mysql_volume:/var/lib/mysql
       environment:
         MYSQL_DATABASE: myFit
         MYSQL_ROOT_PASSWORD: 42424242
@@ -16,7 +16,7 @@ services:
     app:
       build: 
         context: .
-      container_name: myFitApi
+      container_name: myfitapi
       ports:
         - 3000:3000
       environment:
@@ -30,5 +30,6 @@ services:
       command: npm run start
 volumes: 
   nodemodules: {}
+  mysql_volume: {}
    
 
