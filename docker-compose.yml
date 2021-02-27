@@ -12,7 +12,6 @@ services:
         MYSQL_ROOT_PASSWORD: 42424242
         MYSQL_USER: vsyveniu
         MYSQL_PASSWORD: 42424242
-      command: mysqld --default-authentication-plugin=mysql_native_password  
       restart: always
     phpmyadmin:
       image: phpmyadmin:latest
