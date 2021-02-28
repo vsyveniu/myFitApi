@@ -14,7 +14,8 @@ dotenv.config();
 }); */
 
 const connection = mysql.createPool({
-  host: "192.168.99.102",
+ // host: "172.22.0.2",
+  host: "db",
   port: "3306",
   user: "vsyveniu",
   password: "42424242",
