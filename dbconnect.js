@@ -1,8 +1,6 @@
 const mysql = require("mysql2");
-const dotenv = require("dotenv");
-const migration = require("mysql-migrations");
+const dotenv = require("dotenv").config();
 
-dotenv.config({ path: "../.env" });
 
 const connection = mysql.createPool({
   host: process.env.DB_HOST,
@@ -13,6 +11,4 @@ const connection = mysql.createPool({
   connectionLimit: 10,
 });
 
-migration.init(connection, __dirname, () => {
-  console.log("migrations finished");
-});
+module.exports = connection;

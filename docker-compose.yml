@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     db: 
       image: mysql:8.0.23
@@ -26,10 +26,23 @@ services:
         MYSQL_ROOT_PASSWORD: 42424242
         MYSQL_USER: vsyveniu
         MYSQL_PASSWORD: 42424242
+    mongodb:
+      image: mongo:3.6.22
+      container_name: mongo
+      ports:
+        - 3308:27017
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: vsyveniu
+        MONGO_INITDB_ROOT_PASSWORD: 42424242
+        MONGO_INITDB_DATABASE: myfit
+      restart: always
+      volumes:
+        - mongo_volume:/data/db
     app:
       build: 
         context: .
       container_name: myfitapi
+      init: true
       ports:
         - 3000:3000
       environment:
@@ -40,9 +53,11 @@ services:
       restart: always
       depends_on: 
         - db
+        - mongodb
       command: npm run start
 volumes: 
   nodemodules: {}
   mysql_volume: {}
+  mongo_volume: {}
    
 

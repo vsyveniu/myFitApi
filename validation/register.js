@@ -5,9 +5,11 @@ const registerValidation = (data) => {
     const schema = Joi.object({
         name: Joi.string()
             .min(6)
+            .max(42)
             .required(),
         email: Joi.string()
             .min(6)
+            .max(42)
             .required()
             .email(),
         password: Joi.string()

@@ -1,72 +1,57 @@
 const router = require('express').Router();
-const User = require('../model/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { registerValidation } = require('../validation/register');
-const { loginValidation } = require('../validation/login');
+const { User } = require('../models/User');
 
+const registerValidate = require('../middlewares/registerValidation');
+const loginValidate = require('../middlewares/loginValidation');
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidate, async (req, res) => {
+    const userExists = await User.findByEmail(req.body.email);
 
-    const validation = registerValidation(req.body);
-
-    if(validation.hasOwnProperty('error')){
-        res.status(400).send(validation.error.details[0].message);
-    }
-    else{
-
-        /* const emailExist = await User.findOne({ email: req.body.email });
-        if(emailExist){
-            return res.status(400).send('Email already exists');
-        } */
-
+    if (userExists) {
+        return res.status(400).send('User already exists');
+    } else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        const user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-        });
+        const user = new User(req.body.name, req.body.email, hashedPassword);
 
-        console.log(hashedPassword);
-
-        try{
-            const savedUser = await user.save();
-            res.status(200).send('User created succesfully');
-        } catch(err) {
-            res.status(400).send(` Damn error has occured: ${err}`);
+        try {
+            await user.save();
+        } catch (err) {
+            return res.status(500).send('cannot create user').end();
         }
-    } 
+
+        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+        res.status(200).header('authorization', token).send({
+            name: user.name,
+            email: user.email,
+        });
+    }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginValidate, async (req, res) => {
+    const user = await User.findByEmail(req.body.email);
+    console.log(req);
+    if (!user) {
+        return res.status(404).send(`user doesn't exist`);
+    } else {
+        const isPasswordOk = await bcrypt.compare(
+            req.body.password,
+            user.password
+        );
 
-    const validation = loginValidation(req.body);
-
-    if(validation.hasOwnProperty('error')){
-        res.status(400).send(validation.error.details[0].message);
-    }
-    else{
-
-        const user = await User.findOne({ email: req.body.email });
-        if(!user){
-            return res.status(400).send('Email is not exist');
-        }
-
-        const isPasswordOk = await bcrypt.compare(req.body.password, user.password)
-
-        if(!isPasswordOk){
+        if (!isPasswordOk) {
             return res.status(400).send('Password is incorrect');
         }
-
-        const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token).send(token);
-
+        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+        res.header('authorization', token).send({
+            name: user.name,
+            email: user.email,
+        });
     }
-
 });
-
 
 module.exports = router;
