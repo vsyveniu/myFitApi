@@ -4,10 +4,13 @@ dotenv.config({ path: '../.env' });
 const config = {
     mongodb: {
         // TODO Change (or review) the url to your MongoDB:
-        url: 'mongodb://localhost:27017',
+        url:process.env.MONGO_CONNECT,
+        //url: 'mongodb://localhost:27017',
 
         // TODO Change this to your database name:
-        databaseName: 'YOURDATABASENAME',
+        databaseName: process.env.MONGO_DB_NAME,
+        username: process.env.MONGO_USER,
+        password: process.env.MONGO_PASS,
 
         options: {
             useNewUrlParser: true, // removes a deprecation warning when connecting
