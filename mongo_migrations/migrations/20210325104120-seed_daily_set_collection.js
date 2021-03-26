@@ -3,12 +3,12 @@ module.exports = {
       await db.collection('daily').insertMany([
           {
            owner: 'suggestion',
-           set:{
-             1: 1,
-             2: 2,
-             3: 3,
-             4: 4,
-           }
+           set: [
+             {id: 1},
+             {id: 2},
+             {id: 3},
+             {id: 4},
+           ]
          }
         ]);
   },

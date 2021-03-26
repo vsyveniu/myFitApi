@@ -13,6 +13,7 @@ mongoose.connect(process.env.MONGO_CONNECT, () =>
 //Import Routes
 const authRoute = require('./routes/auth');
 const postsRoute = require('./routes/posts');
+const chainRoute = require('./routes/chain');
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(express.json());
 
 //Route Middlewares
 app.use('/api/user', authRoute);
+app.use('/api/chain', chainRoute);
 app.use('/api/posts', postsRoute);
 
 app.listen(process.env.PORT, () => console.log('Server is running'));
