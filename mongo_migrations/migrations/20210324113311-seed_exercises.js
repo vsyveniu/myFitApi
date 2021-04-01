@@ -2,7 +2,7 @@ module.exports = {
     async up(db, client) {
         await db.collection('exercises').insertMany([
             {
-                _id: 1,
+                id: 1,
                 type: 'power',
                 title: 'bench press',
                 structure: 'pyramid',
@@ -48,7 +48,7 @@ module.exports = {
                 total_weight: 0,
             },
             {
-                _id: 2,
+                id: 2,
                 type: 'power',
                 title: 'deadlift',
                 structure: 'pyramid',
@@ -88,7 +88,7 @@ module.exports = {
                 total_weight: 0,
             },
             {
-                _id: 3,
+                id: 3,
                 type: 'aero',
                 title: 'star jump',
                 structure: '45_sec_action',
@@ -108,7 +108,7 @@ module.exports = {
                 total_weight: 0,
             },
             {
-                _id: 4,
+                id: 4,
                 type: 'cycling',
                 title: 'katun',
                 structure: 'ride',

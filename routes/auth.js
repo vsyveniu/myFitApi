@@ -9,9 +9,10 @@ const loginValidate = require('../middlewares/loginValidation');
 
 router.post('/register', registerValidate, async (req, res) => {
     const userExists = await User.findByEmail(req.body.email);
+    const userNameExists = await User.findByName(req.body.name);
 
-    if (userExists) {
-        return res.status(400).send('User already exists');
+    if (userExists || userNameExists) {
+        return res.status(409).send('Username or email already exists');
     } else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -25,7 +26,7 @@ router.post('/register', registerValidate, async (req, res) => {
         }
 
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        res.status(200).header('authorization', token).send({
+        res.status(200).header('authtoken', token).send({
             name: user.name,
             email: user.email,
         });
@@ -47,7 +48,7 @@ router.post('/login', loginValidate, async (req, res) => {
             return res.status(400).send('Password is incorrect');
         }
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        res.header('authorization', token).send({
+        res.status(200).header('authtoken', token).send({
             name: user.name,
             email: user.email,
         });

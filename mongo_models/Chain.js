@@ -1,29 +1,20 @@
 const mongoose = require("mongoose");
 
 const chainSchema = new mongoose.Schema({
-  name: {
+  onwer: {
     type: String,
     requiered: true,
     max: 255,
-    min: 6,
+    min: 3,
   },
-  email: {
-    type: String,
+  id: {
+    type: Number,
     unique: true,
     requiered: true,
-    max: 255,
-    min: 6,
   },
-  password: {
-    type: String,
-    requiered: true,
-    max: 1024,
-    min: 6,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
+  set: {
+    type: Array,
   },
 });
 
-module.exports = mongoose.model("Chain", userSchema);
+module.exports = mongoose.model("chain", chainSchema);

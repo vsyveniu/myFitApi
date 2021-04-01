@@ -50,6 +50,21 @@ class User {
         });
     }
 
+    static findByName(name) {
+        return new Promise((resolve, reject) => {
+            db.execute(
+                `SELECT * FROM users WHERE name = '${name}'`,
+                function (err, results, fields) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(results[0]);
+                    }
+                }
+            );
+        });
+    }
+
     static read() {
         return new Promise(function (resolve, reject) {
             db.query(

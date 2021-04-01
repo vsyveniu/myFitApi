@@ -23,9 +23,10 @@ dotenv.config();
 //Middleware
 app.use(
     cors({
-        exposedHeaders: ['authorization'],
+        exposedHeaders: ['authtoken'],
     })
 );
+app.options('*', cors());
 app.use(express.json());
 
 //Route Middlewares
