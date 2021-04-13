@@ -1,15 +1,11 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const mongoose = require("mongoose");
 
-const { User } = require('../models/User');
 const Chain = require('../mongo_models/Chain');
+const verifyToken = require('./verifyToken');
 
-const registerValidate = require('../middlewares/registerValidation');
-const loginValidate = require('../middlewares/loginValidation');
 
-router.post('/register', registerValidate, async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
     const userExists = await User.findByEmail(req.body.email);
     const userNameExists = await User.findByName(req.body.name);
 
@@ -43,28 +39,6 @@ router.post('/register', registerValidate, async (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
         res.status(200).header('authtoken', token).send({
             name: user._name,
-            email: user.email,
-        });
-    }
-});
-
-router.post('/login', loginValidate, async (req, res) => {
-    const user = await User.findByEmail(req.body.email);
-    console.log(req);
-    if (!user) {
-        return res.status(404).send(`user doesn't exist`);
-    } else {
-        const isPasswordOk = await bcrypt.compare(
-            req.body.password,
-            user.password
-        );
-
-        if (!isPasswordOk) {
-            return res.status(400).send('Password is incorrect');
-        }
-        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        res.status(200).header('authtoken', token).send({
-            name: user.name,
             email: user.email,
         });
     }

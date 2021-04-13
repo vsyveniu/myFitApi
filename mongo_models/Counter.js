@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
 const chainSchema = new mongoose.Schema({
-  owner: {
+  _id: {
     type: String,
     requiered: true,
-    max: 255,
-    min: 3,
   },
-  set: {
-    type: Array,
+  seq: {
+    type: Number,
+    requiered: true,
   },
 });
 
-module.exports = mongoose.model("chain", chainSchema);
+module.exports = mongoose.model("counter", counterSchema);

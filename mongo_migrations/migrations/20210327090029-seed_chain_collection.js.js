@@ -3,7 +3,6 @@ module.exports = {
         await db.collection('chains').insertMany([
             {
                 owner: 'suggestion',
-                id: 1,
                 set: [
                     { daily_id: 1 },
                     { daily_id: 2 },

@@ -31,9 +31,9 @@ router.put('/', verifyToken, async (req, res) => {
             { set: req.body.set }
         );
         if (update) {
-            res.status(200).send('chain created successfully');
+            res.status(200).send('chain updated successfully');
         } else {
-            res.status(500).send('cannot create chain');
+            res.status(500).send('cannot update chain');
         }
     }
 });
