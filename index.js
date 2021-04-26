@@ -14,6 +14,7 @@ mongoose.connect(process.env.MONGO_CONNECT, () =>
 const authRoute = require('./routes/auth');
 const postsRoute = require('./routes/posts');
 const chainRoute = require('./routes/chain');
+const dayRoute = require('./routes/day');
 
 dotenv.config();
 
@@ -33,5 +34,6 @@ app.use(express.json());
 app.use('/api/user', authRoute);
 app.use('/api/chain', chainRoute);
 app.use('/api/posts', postsRoute);
+app.use('/api/day', dayRoute);
 
 app.listen(process.env.PORT, () => console.log('Server is running'));

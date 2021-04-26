@@ -1,46 +1,40 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
-const Chain = require('../mongo_models/Chain');
+const Day = require('../mongo_models/Daily');
+const Exercise = require('../mongo_models/Exercise');
 const verifyToken = require('./verifyToken');
+const { getNextSequence } = require('../helpers/mongoAutoincrement');
 
-
-router.get('/', verifyToken, async (req, res) => {
-    const userExists = await User.findByEmail(req.body.email);
-    const userNameExists = await User.findByName(req.body.name);
-
-    if (userExists || userNameExists) {
-        return res.status(409).send('Username or email already exists');
-    } else {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-        const user = new User(req.body.name, req.body.email, hashedPassword);
-
-        try {
-            await user.save();
-        } catch (err) {
-            return res.status(500).send('cannot create user').end();
-        }
-
-        try {
-            const suggestedChain = await Chain.findOne({ owner: 'suggestion'});
-
-            const chain = await Chain.create({ 
-                owner: user._name,
-                set: suggestedChain.set,
-             });
-            await chain.save();     
-        } catch (err) {
-            return res.status(500).send('cannot create user').end();
-        }
-
-
-        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        res.status(200).header('authtoken', token).send({
-            name: user._name,
-            email: user.email,
+router.get('/:id', verifyToken, async (req, res) => {
+    try {
+        const day = await Day.findOne({
+            id: req.params.id,
         });
+        for(const item of day.workouts ){
+            for(const exercise of item.set){
+                const meta = await Exercise.findOne({id: exercise.exercise_id})
+                exercise.meta = meta;
+            }
+        }
+        if(day){
+            return res.status(200).send(day);
+        }
+    } catch (err) {
+        return res.status(404).send('cannot find day');
+    }
+});
+
+router.post('/', verifyToken, async (req, res) => {
+    try {
+        const newday = await Day.create({
+            id: await getNextSequence('daily_id'),
+            workouts: [],
+        });
+        await newday.save();
+        return res.status(200).send({ id: newday.id });
+    } catch (err) {
+        return res.status(500).send('cannot create day');
     }
 });
 

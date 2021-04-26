@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const chainSchema = new mongoose.Schema({
+const counterSchema = new mongoose.Schema({
   _id: {
     type: String,
     requiered: true,

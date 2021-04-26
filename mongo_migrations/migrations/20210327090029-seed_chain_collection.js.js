@@ -6,8 +6,13 @@ module.exports = {
                 set: [
                     { daily_id: 1 },
                     { daily_id: 2 },
-                    { daily_id: 3 },
-                    { dayli_id: 4 },
+                ],
+            },
+            {
+                owner: 'vsyveniu',
+                set: [
+                    { daily_id: 1 },
+                    { daily_id: 2 },
                 ],
             },
         ]);

@@ -1,13 +1,16 @@
 const Counter = require('../mongo_models/Counter');
 
-function getNextSequence(name) {
-    let ret = Counter.findAndModify({
-        query: { _id: name },
-        update: { $inc: { seq: 1 } },
-        new: true,
-    });
+async function getNextSequence(name) {
+    console.log('in auto 1');
+    let ret = await Counter.findOneAndUpdate(
+        { _id: name },
+        { $inc: { seq: 1 } },
+        {
+            new: true,
+        }
+    );
 
     return ret.seq;
 }
 
-export default { getNextSequence };
+module.exports = { getNextSequence };

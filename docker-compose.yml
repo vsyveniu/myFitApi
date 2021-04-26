@@ -37,7 +37,7 @@ services:
         MONGO_INITDB_DATABASE: myfit
       restart: always
       volumes:
-        - mongo_volume:/data/db
+        - mongo_volume:/data/db   
     app:
       build: 
         context: .
