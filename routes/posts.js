@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
 
   userCRUD.read(req).then((result) => res.json(result));
 
-  //user.save().then((result) => res.json(result));
 });
 
 module.exports = router;
