@@ -10,13 +10,5 @@ class UserController {
   }
 }
 
-/* const userController = () => ({
-  async create(req) {
-      console.log(req);
-      const user = new User('fuck', 'suck', 'bitch');
-      return (await user.save());
-  },
-
-}); */
 
 module.exports = { UserController };

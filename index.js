@@ -18,10 +18,6 @@ const dayRoute = require('./routes/day');
 
 dotenv.config();
 
-//const user = new User("fuck", "suck", "dick");
-
-//user.save();
-//Middleware
 app.use(
     cors({
         exposedHeaders: ['authtoken'],
